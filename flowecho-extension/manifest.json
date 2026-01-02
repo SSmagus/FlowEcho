@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "FlowEcho",
+  "version": "0.1",
+  "description": "Sends event data to FlowEcho backend",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"]
+    }
+  ]
+}
