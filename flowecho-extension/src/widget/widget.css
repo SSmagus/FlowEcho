@@ -1,0 +1,232 @@
+#flowecho-widget {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 2147483647;
+}
+
+/* Transparent button — logo is main element */
+#flowecho-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.flowecho-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255,215,0,.7));
+}
+
+/* rings */
+#flowecho-btn::before,
+#flowecho-btn::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: rgba(255,215,0,.9);     /* broken arc segment */
+  border-right-color: rgba(255,215,0,.7);   /* second segment */
+
+  box-shadow: 0 0 8px rgba(255,215,0,.6);
+}
+
+/* 2nd ring */
+#flowecho-btn::before {
+  width: 60px;
+  height: 60px;
+  transform: rotate(-15deg);
+  animation: saturn1 3.6s linear infinite;
+}
+
+/* inner */
+#flowecho-btn::after {
+  width: 46px;
+  height: 46px;
+  transform: rotate(25deg);
+  animation: saturn2 3.6s linear infinite reverse;
+  opacity: .9;
+}
+
+@keyframes saturn1 {
+  from { transform: rotate(-15deg); }
+  to   { transform: rotate(345deg); }
+}
+
+@keyframes saturn2 {
+  from { transform: rotate(25deg); }
+  to   { transform: rotate(385deg); }
+}
+
+/* Panel container (hidden above button by default) */
+#flowecho-panel {
+  position: absolute;
+  bottom: 80px;              /* sits ABOVE the button */
+  right: 0;
+  width: 120px;
+
+  background: #0d0d0d;
+  border-radius: 14px;
+  padding: 10px;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,.55),
+              0 0 10px rgba(255,215,0,.25);
+
+  border: 1px solid rgba(255,215,0,.25);
+
+  opacity: 0;
+  transform: translateY(8px) scale(.96);
+  pointer-events: none;
+  transition:
+    opacity .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+/* Show panel when button has .open */
+#flowecho-btn.open + #flowecho-panel,
+#flowecho-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Buttons inside panel */
+#flowecho-panel button {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 4px 0;
+  background: linear-gradient(145deg,#111,#0a0a0a);
+  border-radius: 10px;
+  border: 1px solid rgba(255,215,0,.25);
+
+  color: #e6e6e6;
+  font-size: 13px;
+  letter-spacing: .2px;
+
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+
+/* Hover accent — minimal gold glow */
+#flowecho-panel button:hover {
+  border-color: rgba(255,215,0,.55);
+  background: #141414;
+}
+
+/* Gray-out state */
+#flowecho-widget.paused {
+  filter: grayscale(80%) brightness(.7);
+  opacity: .9;
+  transition: filter .25s ease, opacity .25s ease;
+}
+
+/* Message stack — hugs top-left of the logo */
+#flowecho-msg-stack {
+  position: absolute;
+  bottom: 5px;
+  left: -160px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;   /* <- anchor left */
+  gap: 6px;
+}
+
+/* Chat-bubble message */
+.flowecho-msg {
+  background: #0c0c0c;
+  border: 1px solid rgba(255,215,0,.35);
+  color: #e6e6e6;
+
+  padding: 8px 10px;
+  border-radius: 9px 11px 11px 5px; /* bubble edge */
+
+  font-size: 15px;
+  line-height: 1.25;
+
+  max-width: 220px;
+  width: max-content;        /* <- auto size to text */
+  min-width: 60px;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,.45),
+    0 0 6px rgba(255,215,0,.25);
+
+  opacity: 0;
+  transform: translateY(6px) scale(.97);
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+/* Show state */
+.flowecho-msg.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Overflow fast-fade */
+.flowecho-msg.fade-fast {
+  transition: opacity .18s ease, transform .18s ease;
+  opacity: 0;
+  transform: translateY(-6px) scale(.9);
+}
+
+/* Very light, subtle gold shimmer */
+.flowecho-msg.pulse {
+  box-shadow:
+    0 0 10px rgba(190,160,40,.28),
+    0 0 14px rgba(210,180,60,.20),
+    0 6px 14px rgba(0,0,0,.35);
+}
+
+@keyframes pulse-gold {
+  0% {
+    box-shadow:
+      0 0 0 rgba(190,160,40,0),
+      0 0 0 rgba(210,180,60,0),
+      0 6px 14px rgba(0,0,0,.35);
+    transform: translateY(1px) scale(.985);
+  }
+
+  40% {
+    box-shadow:
+      0 0 12px rgba(190,160,40,.38),
+      0 0 18px rgba(210,180,60,.26),
+      0 6px 14px rgba(0,0,0,.35);
+    transform: translateY(0) scale(1.01);
+  }
+
+  100% {
+    box-shadow:
+      0 0 6px rgba(190,160,40,.20),
+      0 0 10px rgba(210,180,60,.16),
+      0 6px 14px rgba(0,0,0,.35);
+    transform: translateY(0) scale(1);
+  }
+}
+
+.flowecho-msg.pulse {
+  animation: pulse-gold .42s ease-out;
+}
+
+
+.flowecho-msg.pulse {
+  animation: pulse-gold .45s ease-out;
+}
+
+/* Erase / vanish animation */
+.flowecho-msg.erase {
+  opacity: 0;
+  transform: translateY(-4px) scale(.96);
+  transition: opacity .28s ease, transform .28s ease;
+}
+
+
+

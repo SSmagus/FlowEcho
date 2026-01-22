@@ -1,3 +1,4 @@
+
 function emitSampleEvent() {
     const eventPayload = {
         source: "content-script",

@@ -1,11 +1,12 @@
 package com.flowecho.flowecho_backend.controllers;
 
 import com.flowecho.flowecho_backend.dto.EventDto;
+import com.flowecho.flowecho_backend.dto.SessionDto;
 import com.flowecho.flowecho_backend.service.EventService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/events")
@@ -18,7 +19,8 @@ public class EventController {
     }
 
     @PostMapping
-    protected void recordEvent(@RequestBody EventDto eventDto){
-        eventService.saveEvent(eventDto);
+    public Map<String, String> createEvent(@RequestBody EventDto dto) {
+        eventService.saveEvent(dto);
+        return Map.of("status", "ok");
     }
 }

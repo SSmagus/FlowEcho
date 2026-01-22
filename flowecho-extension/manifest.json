@@ -5,7 +5,8 @@
   "description": "Sends event data to FlowEcho backend",
   "permissions": ["storage", "activeTab", "scripting"],
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "src/background.js",
+    "type": "module"
   },
   "action": {
     "default_popup": "src/popup/popup.html"
@@ -13,7 +14,17 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/content.js"]
+      "js": [
+        "src/widget/widget.js",
+        "src/content.js"
+      ],
+      "css": ["src/widget/widget.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
